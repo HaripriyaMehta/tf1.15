@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================*/
 
 #include "tensorflow/lite/core/subgraph.h"
-
+#include <iostream>
 #include <algorithm>
 
 #include "tensorflow/lite/arena_planner.h"
@@ -204,6 +204,7 @@ void Subgraph::CleanupNode(int node_index) {
   TfLiteNode& node = nodes_and_registration_[node_index].first;
   const TfLiteRegistration& registration =
       nodes_and_registration_[node_index].second;
+  //printf("%d /n", node.outputs);
   TfLiteIntArrayFree(node.inputs);
   TfLiteIntArrayFree(node.outputs);
   TfLiteIntArrayFree(node.temporaries);
@@ -553,11 +554,14 @@ TfLiteStatus Subgraph::AddNodeWithParameters(
       &context_,
       CheckTensorIndices("node outputs", outputs.data(), outputs.size()));
 
+  std::cout <<  *outputs.data() << std::endl;
+
   int new_node_index = nodes_and_registration_.size();
   if (node_index) *node_index = new_node_index;
   nodes_and_registration_.resize(nodes_and_registration_.size() + 1);
   auto& node_and_reg = nodes_and_registration_.back();
   TfLiteNode& node = node_and_reg.first;
+
   if (node.inputs) TfLiteIntArrayFree(node.inputs);
   if (node.outputs) TfLiteIntArrayFree(node.outputs);
   if (node.intermediates) TfLiteIntArrayFree(node.intermediates);
