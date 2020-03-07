@@ -421,6 +421,8 @@ TfLiteStatus Subgraph::SetInputs(std::vector<int> inputs) {
 TfLiteStatus Subgraph::SetOutputs(std::vector<int> outputs) {
   TF_LITE_ENSURE_OK(
       &context_, CheckTensorIndices("outputs", outputs.data(), outputs.size()));
+  std::vector<int> intermediates{18, 97, 95, 4, 19, 94, 37, 20, 45, 28, 29, 46, 30, 6, 8, 47, 31, 48, 32, 33, 38, 34, 10, 12, 39, 35, 40, 21, 22, 41, 23, 14, 16, 42, 24, 43, 25, 26, 44, 27, 36, 91, 96};
+  outputs.insert(outputs.end(), intermediates.begin(), intermediates.end());
   outputs_ = std::move(outputs);
   return kTfLiteOk;
 }

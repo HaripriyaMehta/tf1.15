@@ -18,6 +18,7 @@ limitations under the License.
 #include <assert.h>
 #include <stdint.h>
 #include <sys/types.h>
+#include <iostream>
 
 #include <algorithm>
 #include <cmath>

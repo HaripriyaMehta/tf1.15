@@ -14,12 +14,11 @@ limitations under the License.
 ==============================================================================*/
 
 #include "tensorflow/lite/interpreter.h"
-
+#include <iostream>
 #include <cassert>
 #include <cstdarg>
 #include <cstdint>
 #include <cstring>
-
 #include "tensorflow/lite/c/c_api_internal.h"
 #include "tensorflow/lite/context_util.h"
 #include "tensorflow/lite/core/api/error_reporter.h"
