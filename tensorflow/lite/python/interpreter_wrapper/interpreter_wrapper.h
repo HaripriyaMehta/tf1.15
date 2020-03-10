@@ -55,6 +55,7 @@ class InterpreterWrapper {
 
   ~InterpreterWrapper();
   PyObject* AllocateTensors();
+  PyObject* MarkAllAsOutputs();
   PyObject* Invoke();
 
   PyObject* InputIndices() const;

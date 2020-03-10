@@ -124,6 +124,12 @@ PyObject* InterpreterWrapper::AllocateTensors() {
   Py_RETURN_NONE;
 }
 
+PyObject* InterpreterWrapper::MarkAllAsOutputs() {
+  TFLITE_PY_ENSURE_VALID_INTERPRETER();
+  TFLITE_PY_CHECK(interpreter_->MarkAllAsOutputs());
+  Py_RETURN_NONE;
+}
+
 PyObject* InterpreterWrapper::Invoke() {
   TFLITE_PY_ENSURE_VALID_INTERPRETER();
 

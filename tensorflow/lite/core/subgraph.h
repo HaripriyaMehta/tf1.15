@@ -58,6 +58,10 @@ class Subgraph {
   // interpreter.
   TfLiteStatus SetOutputs(std::vector<int> outputs);
 
+  /// Mark the outputs of all operators as output tensors to allow tracing in
+  /// python.
+  TfLiteStatus MarkAllAsOutputs();
+
   // Provide a list of tensor indexes that are variable tensors.
   // Each index is bound check and this modifies the consistent_ flag of the
   // interpreter.

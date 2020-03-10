@@ -204,7 +204,6 @@ void Subgraph::CleanupNode(int node_index) {
   TfLiteNode& node = nodes_and_registration_[node_index].first;
   const TfLiteRegistration& registration =
       nodes_and_registration_[node_index].second;
-  //printf("%d /n", node.outputs);
   TfLiteIntArrayFree(node.inputs);
   TfLiteIntArrayFree(node.outputs);
   TfLiteIntArrayFree(node.temporaries);
@@ -421,9 +420,23 @@ TfLiteStatus Subgraph::SetInputs(std::vector<int> inputs) {
 TfLiteStatus Subgraph::SetOutputs(std::vector<int> outputs) {
   TF_LITE_ENSURE_OK(
       &context_, CheckTensorIndices("outputs", outputs.data(), outputs.size()));
-  std::vector<int> intermediates{18, 97, 95, 4, 19, 94, 37, 20, 45, 28, 29, 46, 30, 6, 8, 47, 31, 48, 32, 33, 38, 34, 10, 12, 39, 35, 40, 21, 22, 41, 23, 14, 16, 42, 24, 43, 25, 26, 44, 27, 36, 91, 96};
-  outputs.insert(outputs.end(), intermediates.begin(), intermediates.end());
   outputs_ = std::move(outputs);
+  return kTfLiteOk;
+}
+
+TfLiteStatus Subgraph::MarkAllAsOutputs() {
+  std::vector<int> outputs;
+  for (int node_index = 0; node_index < nodes_and_registration_.size();
+       ++node_index) {
+    const auto& node = nodes_and_registration_[node_index].first;
+    for (int i = 0; i < node.outputs->size; i++){
+      outputs.push_back(node.outputs->data[i]);
+    }
+  }
+
+  TF_LITE_ENSURE_OK(
+      &context_, CheckTensorIndices("outputs", outputs.data(), outputs.size()));
+  outputs_.insert(outputs_.end(), outputs.begin(), outputs.end());
   return kTfLiteOk;
 }
 
@@ -556,14 +569,11 @@ TfLiteStatus Subgraph::AddNodeWithParameters(
       &context_,
       CheckTensorIndices("node outputs", outputs.data(), outputs.size()));
 
-  std::cout <<  *outputs.data() << std::endl;
-
   int new_node_index = nodes_and_registration_.size();
   if (node_index) *node_index = new_node_index;
   nodes_and_registration_.resize(nodes_and_registration_.size() + 1);
   auto& node_and_reg = nodes_and_registration_.back();
   TfLiteNode& node = node_and_reg.first;
-
   if (node.inputs) TfLiteIntArrayFree(node.inputs);
   if (node.outputs) TfLiteIntArrayFree(node.outputs);
   if (node.intermediates) TfLiteIntArrayFree(node.intermediates);

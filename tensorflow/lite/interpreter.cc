@@ -14,11 +14,12 @@ limitations under the License.
 ==============================================================================*/
 
 #include "tensorflow/lite/interpreter.h"
-#include <iostream>
+
 #include <cassert>
 #include <cstdarg>
 #include <cstdint>
 #include <cstring>
+
 #include "tensorflow/lite/c/c_api_internal.h"
 #include "tensorflow/lite/context_util.h"
 #include "tensorflow/lite/core/api/error_reporter.h"
@@ -132,6 +133,10 @@ TfLiteStatus Interpreter::SetInputs(std::vector<int> inputs) {
 
 TfLiteStatus Interpreter::SetOutputs(std::vector<int> outputs) {
   return primary_subgraph().SetOutputs(outputs);
+}
+
+TfLiteStatus Interpreter::MarkAllAsOutputs() {
+  return primary_subgraph().MarkAllAsOutputs();
 }
 
 TfLiteStatus Interpreter::SetVariables(std::vector<int> variables) {

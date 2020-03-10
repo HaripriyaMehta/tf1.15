@@ -243,6 +243,10 @@ class Interpreter(object):
     self._ensure_safe()
     return self._interpreter.AllocateTensors()
 
+  def mark_all_as_outputs(self):
+    self._ensure_safe()
+    return self._interpreter.MarkAllAsOutputs()
+
   def _safe_to_run(self):
     """Returns true if there exist no numpy array buffers.
 
